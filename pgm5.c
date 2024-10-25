@@ -15,11 +15,11 @@ void search();
 		int data;
 		struct node*next;
 	}
-	struct node*head=NULL, *newnode, *temo, *prev;
+	struct node *head=NULL, *newnode, *temo, *prev;
 
 int main()
 {
-	int ch;
+	int ch=0;
 	while(ch!=8)
 	{
 		printf("\n Enter your choice: ");
