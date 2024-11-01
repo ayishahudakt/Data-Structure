@@ -14,17 +14,17 @@ void search();
 	{
 		int data;
 		struct node*next;
-	}
-	struct node *head=NULL, *newnode, *temo, *prev;
+	};
+	struct node *head=NULL, *newnode, *temp, *prev;
 
 int main()
 {
-	int ch=0;
-	while(ch!=8)
+	int ch;
+	while(ch!=9)
 	{
 		printf("\n Enter your choice: ");
 		printf("\n 1.Insert At Begin \n2.Insert at End \n3.Insert at position \n4.Delete at begin \n5.Delete at end \n6.Delete at position \n7.Traversal\n8.Searching");
-		
+		scanf("%d",&ch);
 		switch(ch)
 		{
 		 case 1:
@@ -56,6 +56,9 @@ int main()
                  case 8:
                         search();
                         break;
+		 case 9:
+			exit(0);
+			break;
 		 default:
 			printf("invalid choice...!!!!");
 	
@@ -68,7 +71,7 @@ void insert_begin()
 {
 	newnode=(struct node*)malloc(sizeof(struct node*));
 	printf("\t enetr the date:");
-	scanf("%d", &newdata->data);
+	scanf("%d", &newnode->data);
 		newnode->next=head;
 		head=newnode;
 	traversal();
@@ -79,10 +82,10 @@ void insert_end()
 {
 	newnode=(struct node*)malloc(sizeof(struct node*));
 	printf("\t enter the data:");
-	scanf("%d",&newdata->data);
+	scanf("%d",&newnode->data);
 	if(head==NULL)
 	{
-		newnode->next=head;
+		newnode->next=NULL;
 		head=newnode;
 	}
 	else
@@ -101,7 +104,7 @@ void insert_end()
 
 void insert_pos()
 {
-	newnode=(struct node*next)malloc(sizeof(struct node *));
+	newnode=(struct node*)malloc(sizeof(struct node *));
 	printf("enter your data:");
 	scanf("%d", &newnode->data);
 	if(head==NULL)
@@ -123,7 +126,7 @@ void insert_pos()
 			temp=head;
 			while(i<n)
 			{
-				temp=temp->head;
+				temp=temp->next;
 				i++;
 			}
 			newnode->next=temp->next;
@@ -159,7 +162,7 @@ void delt_end()
 	else
 	{
 		temp=head;
-		while(temp->next=NULL)
+		while(temp->next!=NULL)
 		{
 		    prev=temp; // temp and prev same node ne aanu point cheyyuka
 		    temp=temp->next; // temp increment cheyth last nodeil ethiyaalu(NULL point cheyyumbo) loopinn porath verum
@@ -234,7 +237,7 @@ void search()
 	else
 	{
 		temp=head;
-		while(temp->next!=NULL)
+		while(temp!=NULL)
 		{
 			if(temp->data==search)
 			{
