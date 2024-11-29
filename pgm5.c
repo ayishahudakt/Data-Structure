@@ -3,7 +3,7 @@
 int n,count=0;
 void insert_begin();
 void insert_end();
-void insert_pos();
+void insert_pos(); 
 void delt_begin();
 void delt_end();
 void delt_pos();
