@@ -26,4 +26,5 @@ int main()
         printf("\n \n smallest no %d",small);
         printf("\n largest no %d",large);
         return 0;
-}
+} 
+
