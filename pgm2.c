@@ -83,3 +83,4 @@ nt k=s1,j,i,a1[s1],a2[s2],a3[s3];
         }
         return 0;
 }
+  
