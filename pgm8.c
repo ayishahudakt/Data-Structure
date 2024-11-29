@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stdlib.h>
+#include<stdlib.h> 
 
 int superSet[20],superSetSize=0,
 setA[20],setASize=0,
