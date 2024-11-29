@@ -76,7 +76,7 @@ void traversal() {
         }
         printf("NULL\n");
     }
-}
+} 
 
 void insert_end() {
     if (head == NULL) {
