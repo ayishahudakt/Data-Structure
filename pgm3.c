@@ -69,4 +69,4 @@ void display()
                 printf("stack is empty");
         }
 }
-
+ 
