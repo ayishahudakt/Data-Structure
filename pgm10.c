@@ -1,6 +1,6 @@
 #include<stdio.h>
 #define MAX 10
-void enqueue();
+void enqueue(); 
 void dequeue();
 void search();
 void display();
