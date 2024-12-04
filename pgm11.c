@@ -1,142 +1,104 @@
-#include<stdio.h>
-#include<stdlib.h> 
+#include <stdio.h>
 
-struct node{
-   struct node *rep;
-   struct node *next;
-   int data;
-}*heads[50],*tails[50];
+struct DisjSet {
+    int parent[10];
+    int rank[10];
+    int n;
+} dis;
 
-static int countRoot=0;
-
-void makeSet(int x){
-	struct node *new=(struct node *)malloc(sizeof(struct node));
-	new->rep=new;
-	new->next=NULL;
-	new->data=x;
-	heads[countRoot]=new;
-	tails[countRoot++]=new;
+void makeSet() {
+    for (int i = 0; i < dis.n; i++) {
+        dis.parent[i] = i; // Initially, each element is its own parent
+        dis.rank[i] = 0; // Initially, all ranks are 0
+    }
 }
 
-struct node* find(int a){
-	int i;
-	struct node *tmp=(struct node *)malloc(sizeof(struct node));
-	for(i=0;i<countRoot;i++){
-		tmp=heads[i];
-		while(tmp!=NULL){
-		if(tmp->data==a)
-		return tmp->rep;
-		tmp=tmp->next;
-		}
- 	}
-	return NULL;
+void displaySet() {
+    printf("\nParent Array: ");
+    for (int i = 0; i < dis.n; i++) 
+        printf("%d ", dis.parent[i]);
+    
+    printf("\nRank Array: ");
+    for (int i = 0; i < dis.n; i++) 
+        printf("%d ", dis.rank[i]);
+    
+    printf("\n");
 }
 
-void unionSets(int a,int b){
-	int i,pos,flag=0,j;
-	struct node *tail2=(struct node *)malloc(sizeof(struct node));
-	struct node *rep1=find(a);
-	struct node *rep2=find(b);
-	if(rep1==NULL||rep2==NULL){
-		printf("\nElement not present in the DS\n");
-		return;
-	}
-	if(rep1!=rep2){
-		for(j=0;j<countRoot;j++){
-			if(heads[j]==rep2){
-				pos=j;
-				flag=1;
-				countRoot-=1;
-				tail2=tails[j];
-				for(i=pos;i<countRoot;i++){
-					heads[i]=heads[i+1];
-					tails[i]=tails[i+1];
-				}
-			}
-			if(flag==1)
-				break;
-		}
-		for(j=0;j<countRoot;j++){
-			if(heads[j]==rep1){
-				tails[j]->next=rep2;
-				tails[j]=tail2;
-				break;
-			}
-		}
-		while(rep2!=NULL){
-		rep2->rep=rep1;
-		rep2=rep2->next;
-		}
-	}
+int find(int x) {
+    if (dis.parent[x] != x)
+        dis.parent[x] = find(dis.parent[x]); // Path compression
+    return dis.parent[x];
 }
 
-int search(int x){
-	int i;
-	struct node *tmp=(struct node *)malloc(sizeof(struct node));
-	for(i=0;i<countRoot;i++){
-		tmp=heads[i];
-		if(heads[i]->data==x)
-			return 1;	
-		while(tmp!=NULL){
-			if(tmp->data==x)
-				return 1;	
-			tmp=tmp->next;
-		}
-	}
-	return 0;
+void Union(int x, int y) {
+    int xset = find(x);
+    int yset = find(y);
+
+    if (xset == yset) 
+        return; // If both are already in the same set, do nothing
+
+    // Union by rank
+    if (dis.rank[xset] < dis.rank[yset]) {
+        dis.parent[xset] = yset;
+    } else if (dis.rank[xset] > dis.rank[yset]) {
+        dis.parent[yset] = xset;
+    } else {
+        dis.parent[yset] = xset;
+        dis.rank[xset] += 1; // Increase rank if both have same rank
+    }
 }
 
-void main(){
-int choice,x,i,j,y,flag=0;
-	
-	do{
-		printf("\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		printf("\n.......MENU.......\n\n1.Make Set\n2.Display set representatives\n3.Union\n4.Find Set\n5.Exit\n");
-	
-		printf("Enter your choice :  ");
-		scanf("%d",&choice);
-		printf("\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-		switch(choice){
-		case 1:	
-			printf("\nEnter new element : ");
-			scanf("%d",&x);
-			if(search(x)==1)
-				printf("\nElement already present in the disjoint set DS\n");
-			else
-				makeSet(x);
-			break;
-		case 2:
-			printf("\n");
-			for(i=0;i<countRoot;i++)
-				printf("%d ",heads[i]->data);
-			printf("\n");
-			break;
-		case 3:
-			printf("\nEnter first element : ");
-			scanf("%d",&x);
-			printf("\nEnter second element : ");
-			scanf("%d",&y);
-			unionSets(x,y);
-			break;
-		case 4:
-			printf("\nEnter the element");
-			scanf("%d",&x);
-			struct node *rep=(struct node *)malloc(sizeof(struct node));
-			rep=find(x);
-			if(rep==NULL)
-			printf("\nElement not present in the DS\n");
-			else
-			printf("\nThe representative of %d is %d\n",x,rep->data);
-			break;
-		case 5:
-			exit(0);
-		default: 
-			printf("\nWrong choice\n");
-			break;
-		}
-	}
-	while(1);
+int main() {
+    int x, y, ch, wish;
 
-};
+    // User input for number of elements
+    printf("Enter the number of elements: ");
+    scanf("%d", &dis.n);
 
+    // Take input for elements (optional, since array indices represent the elements)
+    printf("Elements in the disjoint set will be indexed from 0 to %d.\n", dis.n - 1);
+    makeSet();
 
+    do {
+        printf("\nMENU\n");
+        printf("1. Union\n2. Find\n3. Display\n");
+        printf("Enter choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                printf("Enter two elements to perform union (0 to %d): ", dis.n - 1);
+                scanf("%d %d", &x, &y);
+                if (x >= 0 && x < dis.n && y >= 0 && y < dis.n) {
+                    Union(x, y);
+                } else {
+                    printf("Invalid element values.\n");
+                }
+                break;
+            case 2:
+                printf("Enter two elements to check if they are in the same set (0 to %d): ", dis.n - 1);
+                scanf("%d %d", &x, &y);
+                if (x >= 0 && x < dis.n && y >= 0 && y < dis.n) {
+                    if (find(x) == find(y))
+                        printf("Elements %d and %d are in the same set.\n", x, y);
+                    else
+                        printf("Elements %d and %d are NOT in the same set.\n", x, y);
+                } else {
+                    printf("Invalid element values.\n");
+                }
+                break;
+            case 3:
+                displaySet();
+                break;
+            default:
+                printf("Invalid choice\n");
+        }
+
+        printf("\nDo you wish to continue? (1/0): ");
+        scanf("%d", &wish);
+
+    } while (wish == 1);
+
+    return 0;
+}
