@@ -1,0 +1,203 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Global variables
+int n, count = 0;
+
+// Function declarations
+void insert_begin();
+void insert_end();
+void insert_pos();
+void traversal();
+void delt_begin();
+void delt_end();
+void delt_pos();
+
+// Structure for the node
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL, *newnode, *temp, *prev;
+
+// Main function
+int main() {
+    int ch;
+
+    while (ch != 8) {
+        printf("\nEnter your choice:\n");
+        printf("1. INSERT AT BEGINNING\n");
+        printf("2. INSERT AT END\n");
+        printf("3. INSERT AT A POSITION\n");
+        printf("4. TRAVERSAL\n");
+        printf("5. DELETION AT BEGINNING\n");
+        printf("6. DELETION AT END\n");
+        printf("7. DELETION AT A POSITION\n");
+        printf("8. EXIT\n");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                insert_begin();
+                break;
+            case 2:
+                insert_end();
+                break;
+            case 3:
+                insert_pos();
+                break;
+            case 4:
+                traversal();
+                break;
+            case 5:
+                delt_begin();
+                break;
+            case 6:
+                delt_end();
+                break;
+            case 7:
+                delt_pos();
+                break;
+            case 8:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+    return 0;
+}
+
+// Function to insert a node at the beginning
+void insert_begin() {
+    newnode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the data: ");
+    scanf("%d", &newnode->data);
+
+    newnode->next = head;
+    head = newnode;
+    traversal();
+    count++;
+}
+
+// Function to display the linked list
+void traversal() {
+    if (head == NULL) {
+        printf("No nodes are present\n");
+    } else {
+        temp = head;
+        while (temp != NULL) {
+            printf("%d -> ", temp->data);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+// Function to insert a node at the end
+void insert_end() {
+    newnode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the data: ");
+    scanf("%d", &newnode->data);
+
+    if (head == NULL) {
+        newnode->next = NULL;
+        head = newnode;
+    } else {
+        temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        newnode->next = NULL;
+        temp->next = newnode;
+    }
+    traversal();
+    count++;
+}
+
+// Function to insert a node at a specific position
+void insert_pos() {
+    newnode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the data: ");
+    scanf("%d", &newnode->data);
+
+    if (head == NULL) {
+        newnode->next = NULL;
+        head = newnode;
+    } else {
+        printf("Enter the position to insert: ");
+        scanf("%d", &n);
+
+        if (n > count) {
+            printf("Insertion not possible\n");
+        } else {
+            int i = 1;
+            temp = head;
+            while (i < n) {
+                temp = temp->next;
+                i++;
+            }
+            newnode->next = temp->next;
+            temp->next = newnode;
+        }
+    }
+    traversal();
+    count++;
+}
+
+// Function to delete a node from the beginning
+void delt_begin() {
+    if (head == NULL) {
+        printf("No nodes found\n");
+    } else {
+        temp = head;
+        head = temp->next;
+        free(temp);
+    }
+    traversal();
+    count--;
+}
+
+// Function to delete a node from the end
+void delt_end() {
+    if (head == NULL) {
+        printf("No nodes found\n");
+    } else {
+        temp = head;
+        while (temp->next != NULL) {
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = NULL;
+        free(temp);
+    }
+    traversal();
+    count--;
+}
+
+// Function to delete a node from a specific position
+void delt_pos() {
+    if (head == NULL) {
+        printf("No nodes found\n");
+    } else {
+        printf("Enter the position to delete: ");
+        scanf("%d", &n);
+
+        if (n > count) {
+            printf("Deletion not possible\n");
+        } else {
+            int i = 1;
+            prev = head;
+            while (i < n - 1) {
+                prev = prev->next;
+                i++;
+            }
+            temp = prev->next;
+            prev->next = temp->next;
+            free(temp);
+        }
+    }
+    traversal();
+    count--;
+}
