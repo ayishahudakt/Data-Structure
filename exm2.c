@@ -29,7 +29,7 @@ int main()
                 printf("enter a valid choice!!!!");
         }
     }
-    while(choice!=0);
+    while(choice!=4);
 }
 
 void enqueue()
