@@ -81,20 +81,6 @@ void insert_begin() {
     count++;
 }
 
-// Function to display the linked list
-void traversal() {
-    if (head == NULL) {
-        printf("No nodes are present\n");
-    } else {
-        temp = head;
-        while (temp != NULL) {
-            printf("%d -> ", temp->data);
-            temp = temp->next;
-        }
-        printf("NULL\n");
-    }
-}
-
 // Function to insert a node at the end
 void insert_end() {
     newnode = (struct node *)malloc(sizeof(struct node));
@@ -200,4 +186,18 @@ void delt_pos() {
     }
     traversal();
     count--;
+}
+
+// Function to display the linked list
+void traversal() {
+    if (head == NULL) {
+        printf("No nodes are present\n");
+    } else {
+        temp = head;
+        while (temp != NULL) {
+            printf("%d -> ", temp->data);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
 }
